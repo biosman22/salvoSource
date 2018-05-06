@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"> 
+ <url>
+<loc>http://salvo.herokuapp.com/engine</loc> 
+ <lastmod>2017-12-25</lastmod> 
+ <changefreq>never</changefreq> 
+<priority>1.0</priority> 
+</url>
+{% for obj in all %}
+<url>
+<loc>http://salvo.herokuapp.com/engine/t/{{obj.unique_id}}</loc>
+{% if obj.up_date.date.month < 10  %}
+    
+    {% if obj.up_date.date.day < 10 %}
+    <lastmod>{{obj.up_date.date.year}}-0{{obj.up_date.date.month}}-0{{obj.up_date.date.day}}</lastmod> 
+
+    {% else %}
+    <lastmod>{{obj.up_date.date.year}}-0{{obj.up_date.date.month}}-{{obj.up_date.date.day}}</lastmod> 
+    {% endif %}
+  {% else %}
+ <lastmod>{{obj.up_date.date.year}}-{{obj.up_date.date.month}}-{{obj.up_date.date.day}}</lastmod> 
+ {% endif %}
+ <changefreq>never</changefreq> 
+ <priority>0.5</priority> 
+</url>
+{% endfor %}
+
+</urlset>

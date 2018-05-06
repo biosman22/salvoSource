@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="msvalidate.01" content="77C63579FE23CF2EDD430E1542FAB757" />
+  <meta charset="utf-8">
+
+{% block meta %}
+{% endblock %}
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script
+  src="https://code.jquery.com/jquery-3.2.1.js"
+  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+  crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+  <!--script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/shortcuts/infinite.min.js"></script>
+  <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script-->
+
+    <!--Add additional CSS in static file 
+{% load static %}-->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-74043616-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-74043616-2');
+</script>
+
+  <style>
+.btn-primary{
+  background-color: #0086c6;
+}
+.btn-primary:hover{
+  background-color: #00689a;
+}
+  body {
+    font: 'Open Sans', Arial, Sans-serif;
+    margin: 0;
+    background: #EEE;
+}
+.img-thumb {
+    border: .5em solid #ffffff;
+    border-radius: .3em;
+    box-shadow: 2px 2px 4px 0 #ccc;
+}
+.navbar-default {
+  background-color:#0086c6;
+  border-color: #00689a;
+}
+.navbar-default .navbar-brand {
+  color: #ffffff;
+}
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-brand:focus {
+  color: #ffffff;
+}
+.navbar-default .navbar-text {
+  color: #ffffff;
+}
+.navbar-default .navbar-nav > li > a {
+  color: #ffffff;
+}
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus {
+  color: #ffffff;
+}
+.navbar-default .navbar-nav > li > .dropdown-menu {
+  background-color: #00689a;
+}
+.navbar-default .navbar-nav > li > .dropdown-menu > li > a {
+  color: #ffffff;
+}
+.navbar-default .navbar-nav > li > .dropdown-menu > li > a:hover,
+.navbar-default .navbar-nav > li > .dropdown-menu > li > a:focus {
+  color: #ffffff;
+  background-color: #00689a;
+}
+.navbar-default .navbar-nav > li > .dropdown-menu > li.divider {
+  background-color: #00689a;
+}
+.navbar-default .navbar-nav .open .dropdown-menu > .active > a,
+.navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover,
+.navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
+  color: #ffffff;
+  background-color: #00689a;
+}
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .active > a:focus {
+  color: #ffffff;
+  background-color: #00689a;
+}
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .open > a:hover,
+.navbar-default .navbar-nav > .open > a:focus {
+  color: #ffffff;
+  background-color: #00689a;
+}
+.navbar-default .navbar-toggle {
+  border-color: #00689a;
+}
+.navbar-default .navbar-toggle:hover,
+.navbar-default .navbar-toggle:focus {
+  background-color: #00689a;
+}
+.navbar-default .navbar-toggle .icon-bar {
+  background-color: #ffffff;
+}
+.navbar-default .navbar-collapse,
+.navbar-default .navbar-form {
+  border-color: #ffffff;
+}
+.navbar-default .navbar-link {
+  color: #ffffff;
+}
+.navbar-default .navbar-link:hover {
+  color: #ffffff;
+}
+
+@media (max-width: 767px) {
+  .navbar-default .navbar-nav .open .dropdown-menu > li > a {
+    color: #ffffff;
+  }
+  .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover,
+  .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+    color: #ffffff;
+  }
+  .navbar-default .navbar-nav .open .dropdown-menu > .active > a,
+  .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover,
+  .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
+    color: #ffffff;
+    background-color: #00689a;
+  }
+}
+  </style>
+ <!--<link rel="stylesheet" href="{% static 'css/styles.css' %}">-->
+</head>
+
+<body id="master-body">
+ <nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Salvo</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        {% if active_h %}
+        <li class="active" ><a href="#">Home</a></li>
+        {% else %}
+        <li><a href={{server}} >Home</a></li>
+        {% endif%}
+      <!--  <li><a href="#"><span class="glyphicon glyphicon-tasks"></span>&ensp;Supported list</a></li>-->
+        <li role="presentation" class="dropdown">
+          
+          <a  class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" 
+          aria-haspopup="true" aria-expanded="false"
+            >
+            
+            
+            <span class="glyphicon glyphicon-download"></span>&ensp;Downloads</a>
+            <ul class="dropdown-menu">
+                <li  {% if active_t %} class="active" {% endif%} >
+                  <a {%if first %} href={{server}}t/{{first.unique_id}} {% endif%}>Top</a></li>
+                <li><a href="{{server}}t/{{recent.unique_id}}">recent</a></li>
+                    
+              </ul>
+            </li>
+        
+        
+          
+          
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        {% if about_active %}
+        <li class="active"><a  ><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
+        
+        {% else %}
+        <li><a href= {{server}}about/ ><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+
+{% block content %}
+{% endblock %}
+<script type="text/javascript">
+var clicky_site_ids = clicky_site_ids || [];
+clicky_site_ids.push(101087806);
+(function() {
+  var s = document.createElement('script');
+  s.type = 'text/javascript';
+  s.async = true;
+  s.src = '//static.getclicky.com/js';
+  ( document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0] ).appendChild( s );
+})();
+</script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101087806ns.gif" /></p></noscript>
+<!--<script async src="https://trustocity.com/badge/afb68b26-ff3c-40e4-a748-9b01ad62494a.js"></script-->
+</body>
+<footer>
+
+  <!--<style>
+    .navbar-fixed-bottom{
+      padding-top: 1em;
+      padding-bottom: 1em;
+      background-color: #fff;
+      opacity: 10%;
+    }
+  </style>
+  <nav  class="navbar  navbar-fixed-bottom">
+    <div class="container">
+      <div class="row">
+          
+        <div class="col-xs-4">
+          <a  onclick="window.open('https://www.gravityscan.com/verify/a3579a8bb1ff5ed3cf6254634dae7539471dffad6a494350f216d9caf85b2856','gravityscan-verified-secure-site','width=760,height=470,left=160,top=170');return false;" href="https://www.gravityscan.com/verify/a3579a8bb1ff5ed3cf6254634dae7539471dffad6a494350f216d9caf85b2856" target="_blank" rel="noopener noreferrer"><img src="https://badges.gravityscan.com/badges/salvo.herokuapp.com-a3579a8bb1ff5ed3cf6254634dae7539471dffad6a494350f216d9caf85b2856" alt="Website Malware Scan" width="117" height="67"></a>
+            
+        </div>
+      </div>
+    </div>
+  </nav-->
+  <style>
+      #bottom-lol{
+        position: relative;
+        padding: 1.5em;
+        margin-left: 2em;
+        
+        
+      }
+    </style>
+  <div class="row">
+  
+      <div id="bottom-lol"  class="col-xs-4">
+        <!-- a  onclick="window.open('https://www.gravityscan.com/verify/a3579a8bb1ff5ed3cf6254634dae7539471dffad6a494350f216d9caf85b2856','gravityscan-verified-secure-site','width=760,height=470,left=160,top=170');return false;" href="https://www.gravityscan.com/verify/a3579a8bb1ff5ed3cf6254634dae7539471dffad6a494350f216d9caf85b2856" target="_blank" rel="noopener noreferrer"><img src="https://badges.gravityscan.com/badges/salvo.herokuapp.com-a3579a8bb1ff5ed3cf6254634dae7539471dffad6a494350f216d9caf85b2856" alt="Website Malware Scan" width="117" height="67"></a>
+        -->
+        </div>
+    </div>
+    <!--<div class="panel panel-default">
+
+<h6>&ensp;thanks to Dr.Romany & Mr.Melad shenouda<h6>
+</div>-->
+</footer>
+</html>

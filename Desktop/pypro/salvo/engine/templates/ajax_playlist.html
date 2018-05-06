@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+
+<script>
+/*
+function calc(event)
+{
+
+event = event || window.event; // IE
+  var target = event.target || event.srcElement; // IE
+
+  var id = target.id;
+  console.log(id);
+  //...
+  li_tag= document.getElementsByName(id)[0];
+  console.log(li_tag);
+  if (target.checked){
+  li_tag.style.backgroundColor = "lightblue";
+  console.log("trueeeee") ;
+  }else{
+  li_tag.style.backgroundColor = "white";
+  }
+  }*/
+
+
+ 
+$( document ).ajaxStart(function() {
+  //alert('lol'+$(this))
+  
+  var first = true;
+  var awesome = $( ".awesome-ajax" );
+  var x = awesome.width();
+  var center = x/2.5
+  /*<table class="table ">
+   <thead>
+     <tr>
+       <th>*/
+  //var table = $("<table>", {'class':'table table-bordered' });
+  //var table_body = $("<tbody>", { });
+
+  var panel = $("<div>", {'class':'panel panel-info ' });
+  var panelHead = $("<div>", {'class':'panel-heading' });
+  var panelTitle = $("<div>", {'class':'panel-title text-center', html:'selected Videos' });
+  var hint = $("<p>", {'class':'text-center', html:"'select video to show download links'", 'style':' font-style: italic; color:Gray' });
+  var panelBody = $("<div>", {'class':'panel-body' });
+  panelHead.append(panelTitle);
+  panelBody.append(hint);
+  var pillsParent = $("<ul>", {'class':'nav nav-pills nav-stacked' });
+  var tabsParent = $("<div>", {'class':'tab-content' });
+  var all_checked = $("input[name='video-list']:checkbox:checked");
+  var collection = new Array();
+  
+  //console.log("all checked form ajax start"+all_checked.length);
+
+  for (let i = 0; i < all_checked.length; i++) {
+    
+    //var table_tr = $("<tr>", { });
+    //var table_td1 = $("<td>", {html:i +1});
+    //table_tr.append(table_td1);
+    //var table_td2 = $("<td>", { });
+    var img_loading = $("<img>", {id: 'video'+0,'class':'img_loading' ,'src':'https://image.ibb.co/cs4EfR/200w_d.gif','style':" width: inherit;  width: 25%; position: relative;"}); 
+    img_loading.css("left", center);
+    let yo = $(all_checked[i]).val();
+    let tit = $(all_checked[i]).attr('title');
+    pill_link = $('<a>',{"data-toggle":'pill','href': "#"+yo, html: i+1+". &nbsp; "+ tit});
+    if (first) {
+      var tab = $("<div>", {id : yo ,'class':'tab-pane fade in active' });
+      var pill = $("<li>", {'class':'active panel panel-info ' });
+    }else{
+      var pill = $("<li>", {'class':'panel panel-info ' });
+      var tab = $("<div>", {id : yo ,'class':'tab-pane fade' });  
+    }
+    first = false;
+    pill.append(pill_link);
+    //table_td2.append(pill);
+    //table_tr.append(table_td2);
+    //table_body.append(table_tr);
+    
+    pillsParent.append(pill);
+    tab.append(img_loading);
+    collection.push(tab);
+  } 
+  collection.every(e=> tabsParent.append(e));
+  //table.append(table_body);
+  //pillsParent.append(table);
+  panelBody.append(pillsParent);
+  panel.append(panelHead);
+  panel.append(panelBody)
+  //alert(awesome);
+  awesome.html(panel);
+  awesome.append(tabsParent);
+  console.log("Triggered ajaxStart handler." );
+
+});
+
+function get_them() {
+  //alert('callable function');
+  checked_array = []
+  var all_checked = $("input[name='video-list']:checkbox:checked");
+  console.log(all_checked.length);
+  
+  all_checked.each(function(){
+    let yo = $(this).val();
+    console.log(yo);
+
+   /* $.get( server_url+"f?v="+$(this).val(), function( data ) {
+    video_frame.html( data );
+    awesome.append(video_frame);
+*/
+    $.ajax({
+      /*xhr:function(){
+        var xhr = new window.XMLHttpRequest();
+         // Download progress
+       xhr.addEventListener("progress", function(evt){
+           if (evt.lengthComputable) {
+             setTimeout(function () {
+               
+              var percentComplete = evt.loaded / evt.total;
+               // Do something with download progress
+               console.log(percentComplete);
+             } ,100)
+           }
+       }, false);
+       return xhr;
+      },*/
+      type:'GET',
+      url :server_url+"f?v="+yo,
+      success: function(data){
+        // Do something success-ish
+       
+      $("#"+yo).html(data );
+      }
+
+    });
+  });
+   
+  // alert( "Load was performed." );
+ 
+};
+
+
+
+$(document).ready(
+function() 
+{  
+/*  var  button_yo = document.getElementById('button')
+ alert(button_yo)
+  button_yo.addEventListener("click", myFunction);
+
+  function myFunction() 
+  {
+    alert (" event");
+  }*/ 
+  var titles = new Array();
+  var videos = new Array();
+  var repeat = false;
+  var matched = false;
+  var query = false;
+  var a_match = null;
+  var same_keyword = false;
+  var pos=0;
+  title_list = document.getElementsByName("titles");
+  video_list = document.getElementsByName("videos");
+
+  function Matchy(id, forgiveness, Pos) {
+  this.id =id ;
+  this.words = 1;
+  this.words_pos = parseInt(Pos);
+  //this.letter_pos = parseInt(l_pos)
+  this.forgiveness = parseInt(forgiveness)
+  this.repeat =0 ;
+  this.int = parseInt(this.id);
+
+  };
+  function Title(id) {
+  this.id =id ;
+  this.title = ''
+  this.int = parseInt(this.id);
+  };
+  function Video(id) {
+  this.id =id ;
+  this.video = '';
+  this.int = parseInt(this.id);
+  };
+  /*function isEven(n) {
+  return n % 2 == 0;
+  }
+
+  function isOdd(n) {
+  return Math.abs(n % 2) == 1;
+  }*/
+  console.log(video_list.length);
+  console.log(title_list.length);
+
+
+  //////
+  for (let n = 0; n < title_list.length; n++) {
+  let a_title= new Title(n);
+  a_title.title = title_list[n].textContent.toUpperCase().split(/(\s+)/).filter( function(e) { return e.trim().length > 0; } );
+  titles.push(a_title);
+
+  let a_video = new Video(n);
+  a_video.video = video_list[n];
+  videos.push(a_video);
+  };
+
+
+  lol =$('#lol');
+  var match_forgiveness=0;
+
+  let query_child= undefined
+
+  var here = document.getElementsByName('here')[0];
+  var  orginal = document.getElementsByName('orginal')[0];
+
+  lol.on('input propertychange paste', function() 
+  { 
+  //query things
+
+  let query_videos =new Array();
+  let match_list = new Array();   
+
+  console.log("---------------start-------------------");
+
+  //generate keywords from input textbox
+  keywords= lol.val().toUpperCase().split(/(\s+)/).filter( function(e) { return e.trim().length > 0; } );
+  //console.log(keywords);
+  let overflow =document.createElement('div');
+  overflow.setAttribute('id',"yo-query");
+  overflow.setAttribute('style','overflow-y: scroll; height:400px;');
+  if (here.contains(query_child)) {
+  here.removeChild(query_child);  
+  }
+
+  if (keywords.length == 0) {
+  for (let v = 0; v < videos.length; v++) {
+    overflow.appendChild( videos[v].video );
+
+  }
+  here.appendChild(overflow);
+  query_child = overflow;
+
+  }else
+  {
+  if (here.contains(orginal)) {
+    here.removeChild(orginal)  
+  }
+  for (let i = 0; i < titles.length; i++) 
+  {
+    for (let j = 0; j < keywords.length; j++) 
+      {  
+        same_keyword = false ;
+        pos = 0
+        titles[i].title.forEach(function(x)
+        {  
+          if ( x.includes(keywords[j]))
+          { 
+            match_forgiveness  =  x.length -( keywords[j].length - x.indexOf(keywords[j]));
+            if (!matched ) {
+              a_match = new Matchy(i, match_forgiveness, pos);
+              same_keyword = true ;
+            }else if (matched)
+            {
+              if (!same_keyword) {
+                //console.log(keywords[j])
+                a_match.forgiveness += match_forgiveness;
+                a_match.words+=1
+                a_match.words_pos +=pos
+                same_keyword = true ;
+              };
+              a_match.repeat+=1; 
+            }
+            matched = true;
+            if (j == keywords.length-1 && a_match.words == keywords.length) 
+            {
+              match_list.push(a_match);
+              ///console.log(keywords);
+              ///console.log('matched object')
+              ///console.log( a_match);
+              ///console.log( titles[i].title+" is repeated "+ a_match.repeat+' And matced '+a_match.words+" keywords");
+            }
+          }
+        pos+=1
+        });
+    };
+    matched = false
+  };
+  match_list.sort(function (a,b) 
+  {
+    /*if ( (a.words >1 || b.words > 1)&&(a.words != b.words ) )
+    {
+        return b.words  - a.words;
+    }
+    else*/ if (a.words_pos != b.words_pos) 
+    {
+      return a.words_pos - b.words_pos;
+    }
+    else if ((a.repeat!=0 || b.repeat!=0 )&&(a.repeat!=b.repeat ))
+    {
+      return b.repeat - a.repeat ;
+    }
+    else
+    {
+      return a.forgiveness - b.forgiveness;
+    }
+  });
+
+  for (let i = 0; i < match_list.length; i++)
+  {
+  overflow.appendChild( videos[match_list[i].int].video);
+
+  };
+  here.appendChild(overflow);
+  query_child = overflow;    
+  };    
+  });     
+});
+var selected_all = false;
+
+function select_all() {
+  var all_videos = document.getElementsByName("videos");
+  var all_boxes  = document.getElementsByName("video-list");
+  var master_all = $('#master-check');
+    
+  console.log(master_all);
+  console.log( all_boxes)
+    if (!selected_all) {
+      for (let i = 0; i < all_boxes.length;i++) {
+      all_boxes[i].checked = true;
+      all_videos[i].style.backgroundColor= "lightblue";
+      };  
+      selected_all = true;
+    }else{
+      for (let i = 0; i < all_boxes.length;i++) {
+      all_boxes[i].checked = false;
+      all_videos[i].style.backgroundColor= "white";
+      }
+      selected_all = false;
+    }
+    
+  };
+
+</script>
+      
+      
+    {% for obj in list %}
+   
+    <div id="item" name="videos" class="list-group-item"  lol="{{obj.the_id}}" >
+      <script>
+        $(document).ready(function name(params) 
+        {
+          input_yo = $('#{{obj.the_id}}');
+          //console.log(input_yo.val());
+          var list_item =$("div[lol='{{obj.the_id}}']");
+          if(input_yo.is(':checked')) {
+            list_item.css("background-color", "lightblue");
+            
+          }else{
+            list_item.css("background-color", "white");
+          };
+          input_yo.change(
+            function() {
+            if(this.checked) {
+            list_item.css("background-color", "lightblue");
+            
+            }else{
+            list_item.css("background-color", "white");
+            }
+          });
+        });
+        </script>
+      <label>
+       
+      <input class="checked" type="checkbox" id="{{obj.the_id}}"  name="video-list" value="{{obj.ytd_id}}" title="{{obj.title}}" >
+        <div class="row">
+            <div class="col-xs-5">
+              <img src="{{ obj.img }}" class="img-responsive" >
+            </div>
+            <div class="col-xs-6">
+              <h4 name="titles">{{ obj.title }}</h4>
+              <h5>{{obj.uploader}}</h5>
+              <h6>&ensp;{{  obj.timestamp }}</h6>            
+            </div>
+          </div>      
+    
+        </label>
+      </div>
+      <!--<div style=" border-bottom: .25em solid black;"></div>-->
+        {% endfor %} 
+    
+
+

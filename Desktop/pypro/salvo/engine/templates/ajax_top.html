@@ -1,0 +1,19 @@
+<div class="infinite-container">
+  
+{% for obj in vids %}
+  <div class="grid-item infinite-item"  data-aos-duration="250" data-aos-once="true" data-aos-offset="0" data-aos="fade-up" >
+ <!-- <div class="grid-item infinite-item"data-aos-offset='100px > -->
+  <a href={{server}}t/{{obj.unique_id}} >
+   
+      <img class='sc' src="https://i.ytimg.com/vi/{{obj.unique_id}}/hqdefault.jpg" alt="{{obj.title }}">
+      
+      <div class='text-box'>
+        <p class= 'text-wrapper'>{{ obj.title }}</p>
+      </div>
+    </a>
+  </div>
+{% endfor %}
+<script></script>
+</div>
+
+  

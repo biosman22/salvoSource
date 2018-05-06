@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<script>
+function csrfSafeMethod(method) {
+  // these HTTP methods do not require CSRF protection
+  return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+function getCookie(name) {
+  var cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+          var cookie = jQuery.trim(cookies[i]);
+          // Does this cookie string begin with the name we want?
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+          }
+      }
+  }
+  return cookieValue;
+}
+
+var csrftoken = getCookie('csrftoken');
+
+function call_server(format_id, ext, the_id, link_url) {
+  the_id="#"+the_id
+  preload_img = $('<img>',{'src':"https://image.ibb.co/gzqeDc/button_loader.gif",'style':'height:2em;' })
+  $(the_id).html(preload_img)
+  $.ajax({
+    type:'POST',
+    url :"{{back_server}}",
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    },
+    datatype: 'json',
+    data:{csrfmiddlewaretoken: "{{csrf_token}}",
+          "unique_id":"{{video.unique_id}}",
+          "title":"{{video.title}}",
+          "format_id":format_id,
+           "ext":ext,
+           "url":link_url},
+    success: function(data){
+      // Do something success-ish
+      $(the_id).html( data );
+    },
+    /*error:function(){
+      // Do something success-ish
+     
+      awesome.html( "something gone wrong" );
+    }*/
+  });
+ 
+}
+</script>
+<style>
+.gr{
+  color:lightslategray;
+}
+</style>
+            <div class="thumbnail">
+              <img id="{{video.unique_id}}" src ="{{video.img_url}}"  style="max-width: 100%;height: auto;">          
+              <div class="caption">
+                <h4>{{video.title}}</h4>
+                  <p class="gr">uploader:&ensp;{{video.uploader}}</p>
+                  <p class="gr">{{video.view_count}} &ensp; views </p>
+
+              </div>
+            </div>
+            <script>
+                function check_me(ev) {
+                  val_yo =ev.getAttribute('value');
+                  var new_iframe = document.createElement('iframe')
+                  new_iframe.setAttribute('height', '0');
+                  new_iframe.setAttribute('width', '');
+                  //new_iframe.setAttribute('style',"opacity:0;");
+                  new_iframe.setAttribute('src', val_yo);
+                  document.getElementById('master-body').appendChild(new_iframe);
+              };
+              </script>
+                <ul class="nav nav-tabs">
+              
+                  <li class="active"><a data-toggle="tab" href="#{{video.unique_id}}vid0"><div class="glyphicon glyphicon-play"></div>&nbsp;Video</a></li>
+                  <li><a data-toggle="tab" href="#{{video.unique_id}}vid1"> <div class="glyphicon glyphicon-headphones"></div>&nbsp;Audio</a></li>
+                  <li><a data-toggle="tab" href="#{{video.unique_id}}vid2"> <div class="glyphicon glyphicon-volume-off"></div>&nbsp;No audio </a></li>
+                </ul>
+                <style>
+              
+                </style>
+                <div class="tab-content">
+                  {% if vds %}
+                  <div id="{{video.unique_id}}vid0" class="tab-pane fade in active">
+                    <div class="panel panel-default">
+                      <table class="table ">
+                        <thead>
+                          <tr>
+                           <th>Resolution</th>
+                           <th>Format</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        {% for obj in vds %}
+                          <tr>
+                            <td>
+                              <h5>{{obj.height}} x {{obj.width}} </h5>
+                            </td>
+                            <td id="{{video.unique_id}}and{{obj.format_id}}">
+                              {% if protected %}
+                              <a onclick="call_server('{{obj.format_id}}','{{obj.ext}}','{{video.unique_id}}and{{obj.format_id}}','{{obj.url}}')" type='video/{{obj.ext}}'   class="btn btn-primary" role="button" download="lol" >
+                                <i class="glyphicon glyphicon-send"></i>
+                                {% if obj.size %}
+                                  {{obj.size}}
+                                  {% else  %}
+              
+                                  {% endif %} 
+                                <span class="badge">.{{obj.ext}}</span>
+
+                              </a>
+                              {% else %}
+                              <a href="{{obj.url}}" type='video/{{obj.ext}}'   class="btn btn-primary" role="button" download="lol" >
+                                <span class="glyphicon glyphicon-download"></span>
+                                {% if obj.size %}
+                                  {{obj.size}}
+                                  {% else  %}
+              
+                                  {% endif %} 
+                                <span class="badge">.{{obj.ext}}</span>
+                              </a>
+                              {% endif %}
+                            </td>
+                          </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  {% endif %}
+                  {% if ads %}
+                  <div id="{{video.unique_id}}vid1" class="tab-pane fade">
+                    <div class="panel panel-default">
+                      <table class="table ">
+                        <thead>
+                          <tr>
+                            <th>Audio biterate</th>
+                            <th>file size</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for obj in ads %}
+                          <tr>
+                            <td>
+                              <h5>{{obj.abr}}kbps</h5>
+                            </td>
+                            <td id="{{video.unique_id}}and{{obj.format_id}}">
+
+                                {% if protected %}
+                                <a  onclick="call_server('{{obj.format_id}}','{{obj.ext}}','{{video.unique_id}}and{{obj.format_id}}','{{obj.url}}')" type='video/{{obj.ext}}'   class="btn btn-primary" role="button" download="lol" >
+                                  <i class="glyphicon glyphicon-send"></i>
+                                 
+                                  {% if obj.size %}
+                                  {{obj.size}}
+                                  {% else  %}
+              
+                                  {% endif %} 
+                                  <span class="badge">.{{obj.ext}}</span>
+                                </a>
+                                {% else %}
+                              <a  href="{{obj.url}}"  class="btn btn-primary" role="button" download="{{obj.url}}" >
+                                <span class="glyphicon glyphicon-download"></span>  
+                                {% if obj.size %}
+                                  {{obj.size}}
+                                  {% else  %}
+              
+                                  {% endif %}  
+                                
+                                
+                                 <span class="badge">.{{obj.ext}}</span>
+                                </a>
+                                {% endif %}
+                              
+                            </td>
+                          </tr>
+                        {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                    {% endif %}
+              
+                  {% if nads %}
+                  <div id="{{video.unique_id}}vid2" class="tab-pane fade">
+                    <div class="panel panel-default">
+                      <table class="table ">
+                        <thead>
+                          <tr>
+                            <th>Resolution</th>
+                            <th> fps</th>
+                            <th>MP4</th>
+                            {% if webm %}
+                            <th>WEBM</th>
+                            {% endif %}
+                          </tr>
+                        </thead>
+                        <tbody>
+                        {% for obj in nads %}
+                          <tr>
+                            <td>
+                              
+                              <h5>{{obj.mp4.height}}x{{obj.mp4.width}}</h5>
+                            </td>
+                            <td>{{obj.mp4.fps}}</td>
+                            <td id="{{video.unique_id}}and{{obj.mp4.format_id}}">
+
+                                {% if protected %}
+                                <a onclick="call_server('{{obj.mp4.format_id}}','{{obj.mp4.ext}}','{{video.unique_id}}and{{obj.mp4.format_id}}','{{obj.mp4.url}}')" type='video/{{obj.ext}}'   class="btn btn-primary" role="button" download="lol" >
+                                  <i class="glyphicon glyphicon-send"></i>           
+                                  {% if obj.mp4.size %}
+                                  {{obj.mp4.size}}                                
+                                  {% endif %}
+                                {% else %}
+                                <a href="{{obj.mp4.url}}" class="btn btn-success" role="button" download="{{obj.mp4.url}}" >
+                              {% if obj.mp4.size %}
+                            {{obj.mp4.size}}                                
+                            {% endif %}
+                            
+                                <span class="glyphicon glyphicon-download"></span>
+                              </a>
+                              {% endif %}
+                            </td>
+                            {% if obj.webm %}
+                            <td id="{{video.unique_id}}and{{obj.webm.format_id}}">
+                                {% if protected %}
+                                <a onclick="call_server('{{obj.webm.format_id}}','{{obj.webm.ext}}','{{video.unique_id}}and{{obj.webm.format_id}}','{{obj.webm.url}}')" type='video/{{obj.ext}}'   class="btn btn-primary" role="button" download="lol" >
+                                  <i class="glyphicon glyphicon-send"></i>
+                                  {% if obj.webm.size %}
+                                  {{obj.webm.size}}
+                                  {% else  %}
+                                  {% endif %}
+                                </a>
+                                {% else %}
+                              <a href="{{obj.webm.url}}" class="btn btn-danger" role="button" download="{{obj.webm.url}}" >
+                                  {% if obj.webm.size %}
+                                  {{obj.webm.size}}
+                                  {% else  %}
+                                  {% endif %}
+                                <span class="glyphicon glyphicon-download"></span>
+                              </a>
+                              {% endif %}
+                            </td>
+                            {% endif %}
+                          </tr>
+                        {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  {% endif %}
+                </div>
+                <!--</body>
+</html>-->

@@ -1,0 +1,193 @@
+
+{% extends "top5.html" %}
+{% block meta %}
+  <meta name="description" content="A simple way to download youtube video, audio">
+  <title>Salvo: about</title>
+{% endblock %}
+{% block lol %}
+
+<div class="panel panel-default">
+  <h5>&ensp;It's a simple website to download videos</h5>
+  <h5>&ensp;just copy and paste the url</h5>
+</div>
+  <style>
+  #powered{
+    width: inherit;
+    width: 70%;
+    max-width: 100%;
+    padding: 2em;
+  }
+  #donate{
+    width: inherit;
+    width: 35%;
+    max-width: 100%;
+  }
+  #imgYad{   
+    position: absolute;
+    display:block;
+  }
+  </style>
+  <script>
+var names = new Array( "dstftw",
+                      "phihag",
+                      "jaimeMF",
+                      "yan12125",
+                      "remitamine",
+                      "rg3",
+                      "FiloSottile",
+                      "pulpe",
+                      "Tithen-Firion",
+                      "gcmalloc",
+                      "yasoob",
+                      "rbrito",
+                      "iemejia",
+                      "gebn",
+                      "pmrowla",
+                      "slava-sh",
+                      "WillSewell",
+                      "tobidope",
+                      "Phaeilo",
+                      "misterhat",
+                      "georgjaehnig",
+                      "chrisjrn",
+                      "wader",
+                      "windom",
+                      "imrehg",
+                      "jtwaleson",
+                      "paulbarbu",
+                    );
+var imgs = new Array( "https://avatars2.githubusercontent.com/u/1908898?s=460&v=4",
+                      "https://avatars0.githubusercontent.com/u/779568?s=460&v=4",
+                      "https://avatars1.githubusercontent.com/u/1239727?s=460&v=4",
+                      "https://avatars2.githubusercontent.com/u/1937689?s=460&v=4",
+                      "https://avatars1.githubusercontent.com/u/10879694?s=460&v=4",
+                      "https://avatars1.githubusercontent.com/u/53487?s=460&v=4",
+                      "https://avatars0.githubusercontent.com/u/1225294?s=460&v=4",
+                      "https://avatars1.githubusercontent.com/u/763046?s=460&v=4",
+                      "https://avatars2.githubusercontent.com/u/10004135?s=460&v=4",
+                      "https://avatars3.githubusercontent.com/u/184983?s=460&v=4",
+                      "https://avatars3.githubusercontent.com/u/3696393?s=460&v=4",
+                      "https://avatars3.githubusercontent.com/u/212145?s=460&v=4",
+                      "https://avatars2.githubusercontent.com/u/79476?s=460&v=4",
+                      "https://avatars2.githubusercontent.com/u/2334407?s=460&v=4",
+                      "https://avatars3.githubusercontent.com/u/651988?s=460&v=4",
+                      "https://avatars2.githubusercontent.com/u/470136?s=460&v=4",
+                      "https://avatars2.githubusercontent.com/u/1119785?s=460&v=4",
+                      "https://avatars3.githubusercontent.com/u/529597?s=460&v=4",
+                      "https://avatars3.githubusercontent.com/u/1131081?s=460&v=4",
+                      "https://avatars3.githubusercontent.com/u/1313483?s=460&v=4",
+                      "https://avatars2.githubusercontent.com/u/1092628?s=460&v=4",
+                      "https://avatars3.githubusercontent.com/u/622300?s=460&v=4",
+                      "https://avatars2.githubusercontent.com/u/185566?s=460&v=4",
+                      "https://avatars0.githubusercontent.com/u/1517646?s=460&v=4",
+                      "https://avatars1.githubusercontent.com/u/38863?s=460&v=4",
+                      "https://avatars0.githubusercontent.com/u/1298565?s=460&v=4",
+                      "https://avatars0.githubusercontent.com/u/656051?s=460&v=4",
+
+                    );
+
+var link , img, left = 5, fixed_width = 0, checked = false, j = 0;
+function Contribution() {
+ 
+
+  for (let i = 0; i < names.length; i++) {
+    link = $("<a>", { href: "https://github.com/"+names[i]});
+    img = $("<img>", { src: imgs[i], id:'imgYad' ,class:'img-thumb'});
+    con_name = $('<div>',{ text:names[i]});
+    img.css("index-z", imgs.length-i);
+    
+    if (left + fixed_width*2>100 ){
+    left = 5;
+    j++;
+    fixed_width = 0;
+    }
+      left += fixed_width*80/100;
+      img.css("left", left+"vw");
+      img.css("top", 20*j-j*2+"vw")
+      fixed_width = 15//-(i/4);
+      img.width(fixed_width+"vw");
+      con_name.css("padding-left","1em")
+    /*}else {
+      if (left-fixed_width<0) {
+        checked=false;
+        j++;
+      }else if(!checked){
+        checked = true;
+        j++;
+      }
+      left -= fixed_width*80/100
+      img.css("left", left+"vw");
+      img.css("top", 20*j-j*2+"vw");
+      fixed_width = 15//-(i/4);
+      img.width(fixed_width+"vw");
+      con_name.css("margin-right","1em")
+    }*/
+
+    //img.css( 'transform', 'rotateY(130deg)')
+    
+    con_name.css("position","absolute");
+    con_name.css("index-z","100");
+    con_name.css("left", left+"vw");
+    con_name.width(fixed_width+"vw");
+    con_name.css("background-color","white")
+    
+    con_name.css("top", 20*j-j*2+"vw");
+    link.append(img);
+    link.append(con_name);
+ 
+    $("#contributers").append(link);
+  }
+}
+$(document).ready(function() {
+Contribution()
+});
+  </script>
+  <h2>&ensp;This site is powered by </h2>
+ 
+  <div class="panel panel-default">
+    <a href="https://www.python.org/">
+      <img id="powered" src="https://image.ibb.co/hyMUWx/python_logo.png" alt="python_logo" border="0">
+    </a> 
+    <a href="https://www.python.org/psf/donations/" class="btn btn-danger" role="button">
+      Donate <span class="glyphicon glyphicon-heart"></span> 
+      <!--img id="donate" src="https://image.ibb.co/iRVyrx/pythonic_love.png" alt="pythonic_love" border="0"-->
+      </a>
+  </div>
+  <div class="panel panel-default">
+    <a href="https://www.djangoproject.com/">
+      <img id="powered" src="https://image.ibb.co/cvbSjH/1200px_Django_logo_svg.png">
+    </a> 
+    <a href="https://www.djangoproject.com/fundraising/" role="button" class="btn btn-danger">
+      Donate <span class="glyphicon glyphicon-heart"></span> 
+      <!--img id="donate" src="https://image.ibb.co/hxEKyc/donate_button.gif" alt="donate_button" border="0"-->    
+    </a>
+  </div>
+  <div class="panel panel-default">
+    <a href="http://www.celeryproject.org/">
+      <img id="powered" src="https://image.ibb.co/hvmhJc/celery2.png">
+    </a> 
+  </div>
+  
+  <div class="panel panel-default">
+    <h4>&ensp;contact</h4>
+    <p> <h5>&ensp; TiTanium AG co.</h5></p>
+    <p> <h5>&ensp; salvo.titanium@mail.ru</h5></p>
+    <p> <h5>&ensp; Egypt, Asyut</h5></p>
+  </div>
+  {% endblock %}
+  {% block last  %}
+
+  <h2 style="width:inherit; width: 100%;">Many Thanks to: </h2>
+  <div class="row" style="position: relative; display: block;">
+    <div class="col-md-12" id="contributers"  style="position: relative; display: block; padding:1em;" >
+
+    </div>
+  </div>
+ 
+  {% endblock %}
+  {% block footer  %}
+  <h3 style="width:inherit; width: 100%;">special thanks to:  </h3>
+  <p>Dr.Romany Attia and Mr.Milad Shenoda</p>
+  {% endblock %}
+
+

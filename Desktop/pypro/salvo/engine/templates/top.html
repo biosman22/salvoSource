@@ -1,0 +1,565 @@
+
+{% extends "base.html" %}
+
+{% block meta %}
+  <!--<meta name="description" content= "{{no1.title}}" >
+  <meta name="keywords" content="{{no1.title}}" >
+  <meta name="author" content="Abanoub Gerges">-->
+  <!--meta name="description" content="uploader :{{no1.uploader}} Downloaded {{no1.counts}} times {{no1.view_count}} views on youtube"-->
+  <meta name="robots" content="index, nofollow">
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "VideoObject",
+      "name": "{{no1.title}}",
+      "description": "Downloaded {{no1.counts}} times ",
+      "thumbnailUrl": "https://i.ytimg.com/vi/{{no1.unique_id}}/default.jpg",
+      "uploadDate": "{{no1.up_date}}",
+      "publisher": {
+        "@type": "Organization",
+        "name": "{{no1.uploader}}",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "http://image.ibb.co/mA8zSR/salvo4.png",
+          "width": 608,
+          "height": 245
+        }
+      },
+      "embedUrl": "https://www.youtube.com/embed/{{no1.unique_id}}",
+      "interactionCount": "{{no1.view_count}}"
+    }
+    </script>
+    <title>{{no1.title}}</title>
+{% endblock %}
+
+{% block content %}
+<style>
+* { box-sizing: border-box; }
+.grid {
+  background: #EEE;
+  width: inherit;
+  width: 90%;
+  margin-left: 5%;
+  margin-top: 2em;
+}
+
+.grid:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.wrapper {
+}
+
+.text-box{
+  position: absolute;
+  background-color: rgba(255,255,255,1);
+  bottom:0px;
+
+}
+
+.text-wrapper {
+  padding-top: .3em;
+  padding-right: .3em;
+  padding-left: .3em;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: inherit;
+  width: 100%;
+}
+
+.sc{
+}
+
+.grid-item:hover img {
+    opacity: .75;
+}
+
+.grid-item img {
+  display:block;
+  /*position: absolute;*/
+  z-index: -1;
+  /*transition: all .5s ease-in-out;
+  transition-property: all;
+  transition-duration: 0.1s;
+  transition-timing-function: ease-in-out;
+  transition-delay: 0s;*/
+  background: #fff;
+  padding: 0;
+  border-radius: 3px;
+  /*
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  */
+}
+
+.grid-item {
+/*  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  */
+  box-shadow: .25vw .25vw .5vw 0 #ccc;
+  background: #fff;  
+  margin-bottom: 1em;
+  border-radius: 3px;
+  float: left;
+  position: relative;
+}
+
+.bob-row{
+  margin-top: 5em;
+  width: 90vw;
+  margin-left: 5vw;
+  display: inline-block;
+}
+
+.bob-panel{
+  position: relative;
+  float: left;
+  background-color: #fff;
+  padding-top: .5em;
+  padding-left: 2%;
+  padding-right: 2%;
+  margin-right: 2%;
+  margin-bottom: 2em;
+  box-shadow: .25vw .25vw .5vw 0 #ccc;
+
+}
+
+.bob-img-parent{
+
+  margin-right: 2%;
+  background: #fff;
+  float: left;
+  position: relative;
+  padding: .3em;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-shadow: .25vw .25vw .5vw 0 #ccc;
+}
+
+.bob-img-parent img{
+  width: inherit;
+  width:100%;
+  display: block;
+  z-index: -1;
+}
+.img-timestamb{
+  position: absolute; 
+  background-color: #fbfbfb;
+  right:0px;
+  bottom:0px;
+  color: darkslategray;
+  padding: .5vw;
+}
+
+.bob-rating{
+ /* border-radius: 6vw 6vw 3vw 3vw ;
+  border: .3vw solid #428bca;*/
+  padding: 2em;
+  float: left;
+}
+
+.bob-info{
+  float: left;
+  /*border-left: 2vw ridge #428bca;*/
+  padding-left: 1vw;
+  font-size: 1em;
+}
+.bob-uploader{
+  font-size: 1em;
+  color: darkslategrey  ;
+ 
+}
+.bob-youtube{
+  font-size: inherit;
+}
+.bob-update{
+  width:inherit; width:100%;
+  position: absolute;
+  font-style: italic; 
+  color:Gray; 
+  display:block;
+  right: 0;
+  bottom: 0; 
+}
+@media only screen and (min-width: 250px) {
+
+  .grid-item {
+    width: inherit;
+    width: 100%;
+    height: 67.8vw;
+    padding-top: .5em;
+    padding-right: 2%;
+    padding-left: 2%;
+  }
+  .text-box{
+    width: inherit;
+    width: 98%;
+    font-size: small;
+  }
+ .sc{
+    width: inherit;
+    width: 100%;
+  }
+
+  .bob-img-parent{
+    width: inherit;
+    height: inherit;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .bob-panel{
+    width: inherit;
+    width: 100%;
+  }
+  .bob-info{
+    width: inherit;
+    width: 100%;
+    /*height: 20vw;
+    border-left: .3em solid #428bca;
+  */
+  }
+  .bob-rating{
+    width: inherit;
+    width: 100%;
+  }
+  #fixture-stars{
+  font-size: x-large;
+  }
+  #fixture{
+    font-size: x-large;
+  }
+}
+@media only screen and (min-width: 400px) {
+  .grid-item{
+    width: inherit;
+    width:45%;
+    height: 31vw;
+    padding-top: .5em;
+    padding-right: .5%;
+    padding-left: .5%;
+    margin-left: 2%;
+    margin-right: 2%;  
+  }
+  .text-box{
+  width: inherit;
+  width: 98%;
+  font-size: small;
+}
+
+.sc{
+    width: inherit;
+    width: 100%;
+  }  
+
+  .bob-img-parent{
+    width: inherit;
+    height: inherit;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .bob-panel{
+    width: inherit;
+    width: 100%;
+  }
+  .bob-info{
+    width: inherit;
+    width: 90%;
+    /*height: 20vw;
+    border-left: .3em solid #428bca;
+  */
+  }
+  .bob-rating{
+    width: inherit;
+    width: 90%;
+  }
+  #fixture-stars{
+  font-size: x-large;
+  }
+  #fixture{
+    font-size: x-large;
+  }
+
+}
+
+@media only screen and (min-width: 600px) {
+
+}
+
+@media only screen and (min-width: 992px) {
+  .text-box{
+    width: inherit;
+    width:98%;
+  }
+  .grid-item{
+    position: relative;
+    width: inherit;
+    width:30%;
+    height: 20.7vw;
+    padding-top: .5em;
+    padding-right: .5%;
+    padding-left: .5%;  
+    margin-left: 1%;
+    margin-right: 1%;  
+  }
+  .sc{
+    width: inherit;
+    width: 100%;
+  }
+  .bob-img-parent{
+    position: relative;
+    width: inherit;
+    height: inherit;
+    width: 45%;
+    height: 100%;
+  }
+
+  .bob-panel{
+    width: inherit;
+    width: 50%;
+  }
+  .bob-info{
+    width: inherit;
+    width: 60%;
+    /*height: 20vw;
+    border-left: .3% solid #428bca;*/
+  }
+  .bob-rating{
+    width: inherit;
+    width: 40%;
+  }
+  #fixture-stars{
+  font-size: x-large;
+  }
+  #fixture{
+    font-size: x-large;
+  }
+}
+/*
+@media only screen and (min-width: 1366px) {
+    .grid-item {
+    }
+    .sc{
+    }
+}*/
+
+.stars-container {
+  position: relative;
+  display: inline-block;
+  color: transparent;
+}
+
+.stars-container:before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: '★★★★★';
+  color: lightgray;
+}
+
+.stars-container:after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: '★★★★★';
+  color: #428bca;
+  overflow: hidden;
+}
+
+
+
+</style>
+<script>
+  var myNamespace = {};
+
+myNamespace.round = function(number, precision) {
+    var factor = Math.pow(10, precision);
+    var tempNumber = number * factor;
+    var roundedTempNumber = Math.round(tempNumber);
+    return roundedTempNumber / factor;
+};
+  $(function() {
+  function addScore(score, $domElement) {
+    var starWidth = "<style>.stars-container:after { width: " + score + "%} </style>";
+    $("<span class='stars-container'>")
+      .text("★★★★★")
+      .append($(starWidth))
+      .appendTo($domElement);
+  }
+  var lol_fixed =parseFloat ("{{no1.average_rating}}") 
+ 
+  var fixed_plus =  myNamespace.round(lol_fixed,1);
+  $("#fixture").append(fixed_plus)
+  addScore( lol_fixed *20, $("#fixture-stars"));
+});
+$(document).ready(function () {
+  var dur = $("#time-here");
+var date = new Date(parseInt("{{no1.duration}}") * 1000);
+var mm = date.getMinutes();
+var ss = date.getSeconds();
+//alert(mm);
+//alert(ss);
+var t = "&ensp;"+mm+":"+ss;
+dur.html("&ensp;<span  class='glyphicon glyphicon-time'></span>"+ t );  
+title_hi =  $('.bob-title').outerHeight();
+//alert("title"+title_hi);
+info_hi = $('.bob-info').outerHeight();
+$('.bob-info').css('height',info_hi);
+//alert(info_hi);
+update_hi = $('.bob-update').outerHeight();
+//alert('update'+update_hi);
+
+//$('.bob-panel').height(title_hi+info_hi+ update_hi*4);
+
+})
+/* fixed in python
+function getImgSize(imgSrcId) {
+    var newImg = new Image();
+
+    newImg.onload = function() {
+      var height = newImg.height;
+      var width = newImg.width;
+      if (height == 90 && width == 120)
+      {
+        $('.high-img').attr('src',"https://i.ytimg.com/vi/"+ imgSrcId+"/hqdefault.jpg")
+      }
+      alert ('The image size is '+width+'*'+height);
+    }
+
+    newImg.src ="https://i.ytimg.com/vi/"+ imgSrcId+"/maxresdefault.jpg"; // this must be done AFTER setting onload
+}
+getImgSize("{{no1.unique_id}}");*/
+</script>
+
+<div  class="bob-container">
+  <div  class="bob-row">
+  
+    <div class="bob-img-parent">
+       <!-- <div class="bob-img">`-->
+       
+        <img id='image' src="{{no1.img_url}}" alt="{{no1.title}}">
+       
+        <div id="time-here" class="img-timestamb">lolol</div>
+    </div>
+    <!--</div>-->
+    <div class="bob-panel">
+      <h4 class="bob-num" style="font-weight: bold;">&ensp;#{{no1.num}}.&ensp;<span class="bob-title" >{{no1.title}}</span></h4>
+      <p>
+      <div class="bob-rating">
+        <p id="fixture" class="text-center"></p>
+        <p  id="fixture-stars" class="text-center"></p>
+      </div>
+      <div class="bob-info">
+        <div>
+          <p class="bob-uploader"> Uploader : {{no1.uploader}} </p>     
+          <!--<spanclass="glyphiconglyphicon-cloud-download"></span>-->
+          <p class="info">Downloaded {{no1.counts}} times  </p>
+          <p class="info_num" > <!--<span class="glyphicon glyphicon-eye-open"></span>--> {{no1.view_count}} views on youtube</p>
+        </div>
+      <div class="bob-youtube">
+        <a  href="https://www.youtube.com/watch?v={{no1.unique_id}}" class='btn btn-danger btn-block' role='button'>
+          Go to&ensp; 
+          <div class='glyphicon glyphicon-play'> </div>&ensp;youtube
+        </a>      
+      </div>   
+      <p style="width:inherit; width:100%; display:block; position:relative; height:40px;"> &nbsp;   &emsp;    &ensp; </p> 
+      <br>
+    </div>
+  </p>   
+    <p class="bob-update"> "last update" {{no1.up_date}}</p>
+  </div>
+  </div>
+</div>
+  <div class="loading" style="display:none;">
+      <img style="width: inherit; width: 25%; position: relative; margin-left:40vw;" class="img_loading" src="https://image.ibb.co/cs4EfR/200w_d.gif">
+  </div>
+  <div class="wrapper">
+    <div class="grid" id='grid'>
+      </div>
+    </div>
+ <script>
+
+  var n=9, all_count ="{{ all }}", first_throw = true;
+  console.log("{{ all }}");
+  console.log(all_count);
+  all_count = parseInt(all_count);
+  console.log(all_count);
+/*
+ * jQuery throttle / debounce - v1.1 - 3/7/2010
+ * http://benalman.com/projects/jquery-throttle-debounce-plugin/
+ * 
+ * Copyright (c) 2010 "Cowboy" Ben Alman
+ * Dual licensed under the MIT and GPL licenses.
+ * http://benalman.com/about/license/
+ */
+ (function(b,c){var $=b.jQuery||b.Cowboy||(b.Cowboy={}),a;$.throttle=a=function(e,f,j,i){var h,d=0;if(typeof f!=="boolean"){i=j;j=f;f=c}function g(){var o=this,m=+new Date()-d,n=arguments;function l(){d=+new Date();j.apply(o,n)}function k(){h=c}if(i&&!h){l()}h&&clearTimeout(h);if(i===c&&m>e){l()}else{if(f!==true){h=setTimeout(i?k:l,i===c?e-m:e)}}}if($.guid){g.guid=j.guid=j.guid||$.guid++}return g};$.debounce=function(d,e,f){return f===c?a(d,e,false):a(d,f,e!==false)}})(this);
+
+function loadMore(){
+ 
+  var grid = $('.grid');
+ 
+  try {
+    if ( n-9 >= all_count) {
+
+    throw ' "there is no more results"';
+  }
+  $.ajax({
+    type:'GET',
+    url :"{{the_url}}"+n.toString(),
+    success: function(data){
+      
+      n+= 9;
+      console.log(n);
+      //alert('what');
+    // Do something success-ish
+    grid.append( data );
+    },
+    /*error:function(){
+    // Do something success-ish
+    awesome.html( "something gone wrong" );
+    }*/
+  });     
+
+      
+  } 
+  catch (e) {
+    if (first_throw){ 
+    $(".wrapper").append("<p style='color:grey;'>" +e+"</p>");
+    console.log(e);
+    first_throw = false
+    }
+  }
+ 
+}
+$(document).ready(function () {
+  loadMore();
+});
+
+//$('.loading').show();
+//$('.mory').show();
+
+//setTimeout(function () {
+$(window).scroll($.debounce( 250, function(){
+  if($(window).scrollTop() + $(window).height() > $(document).height() - 50) {
+    
+    loadMore()
+  }
+}));
+
+</script>
+<div class="mory" style="display:none; margin:auto;">
+  <div class="row">
+    <div class="col-xs-3"></div>
+    <div class="col-xs-6">
+        <button type="button" id="button" onclick="loadMore()"  class="btn btn-lg btn-primary btn-block">load more</button>
+    </div>
+  </div>
+</div>
+{% endblock %}

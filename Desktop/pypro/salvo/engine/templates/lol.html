@@ -1,0 +1,73 @@
+
+{% extends "top5.html" %}
+{% block meta %}
+  <meta name="description" content="A simple way to download youtube video, audio">
+  <meta name="keywords" content="download videos, download youtube video,">
+  <meta name="author" content="Abanoub Gerges">
+{% endblock %}
+{% block lol %}
+
+<div class="orginal-content">
+  <style>
+  .the-frame{
+    width:inherit;
+    height:600px;
+    width: 100%;
+    border: none;
+
+  }
+  </style>
+  <script>
+
+$(document).ready(
+  
+  function() 
+{ 
+  var awesome = $( ".awesome-ajax" );
+  $.ajax({
+      /*xhr:function(){
+        var xhr = new window.XMLHttpRequest();
+         // Download progress
+       xhr.addEventListener("progress", function(evt){
+           if (evt.lengthComputable) {
+             setTimeout(function () {
+               
+              var percentComplete = evt.loaded / evt.total;
+               // Do something with download progress
+               console.log(percentComplete);
+             } ,100)
+           }
+       }, false);
+       return xhr;
+      },*/
+      type:'GET',
+      url :server_url+"f?v={{url_id}}",
+      success: function(data){
+        // Do something success-ish
+       
+        awesome.html( data );
+      },
+      /*error:function(){
+        // Do something success-ish
+       
+        awesome.html( "something gone wrong" );
+      }*/
+    });
+  
+
+
+var x = awesome.width();
+var center = x/2.5
+$(".img_loading").css("left", center);
+//alert(center);
+
+});
+  </script>
+
+    <div class="awesome-ajax" >
+      <img style="width: inherit; width: 25%; position: relative;" class="img_loading" src="https://image.ibb.co/cs4EfR/200w_d.gif">
+      </div>
+    </div>
+ 
+
+  {% endblock %}

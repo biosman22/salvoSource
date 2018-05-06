@@ -1,0 +1,70 @@
+
+{% extends "base.html" %}
+{% block meta %}
+  <meta name="description" content="A simple way to download youtube video, audio">
+  <meta name="keywords" content=",download videos, download youtube video,etube.herokuapp.com">
+  <meta name="author" content="Abanoub Gerges">
+  <meta name="yandex-verification" content="bcad2094554f24de" />
+  <title>Salvo</title>
+{% endblock %}
+{% block content %}
+<style>
+ul.errorlist {display:none;}
+
+</style>
+<div class="container" style="position:relative; height:inherit; height:80vh;">
+<div class="row">
+    <div class="col-sm-3">
+    </div>
+    <div class="col-sm-6">
+		<div class="row">
+			<div class="col-xs-1">
+			</div>
+			<div class="col-xs-10">
+			<br>
+			<br>
+			<br>
+			<br>
+			<img  class= "img img-responsive"  src="http://image.ibb.co/mA8zSR/salvo4.png"  alt="salvo" border="0">
+				<br>
+				<br>
+				
+			</div>
+			<div class="col-xs-1">
+			</div>
+		</div>
+        <div class="row">
+			<div class="col-xs-1">
+			</div>
+			<div class="col-xs-10">
+            <div id='awesome'>
+			<form id='rid'  method="post" >
+
+					{% csrf_token %}
+					{{ form }}
+					<br>
+
+					<input id='button' type="submit" value="Process"  class="btn btn-lg btn-primary btn-block" />
+				</form>
+            </div>    
+            </div>
+			<div class="col-xs-1">
+			</div>
+		
+		</div>
+    </div>
+   <div class="col-sm-2">
+     
+	</div>
+</div>
+</div>
+<!-- for a later version of this
+<script>
+$('#button').on({
+    'click': function(){
+        $('#rid').remove();
+    }
+});
+</script>-->
+{% endblock %}
+

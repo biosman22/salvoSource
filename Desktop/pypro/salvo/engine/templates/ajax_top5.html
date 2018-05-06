@@ -1,0 +1,27 @@
+
+     {% if top %}
+     <div class="list-group">
+       <a class='list-group-item '>
+         <h4 class="list-group-item-heading" >Top downloads</h4>
+       </a>
+       {% for obj in top %}
+       <a class="list-group-item" href={{server}}t/{{obj.unique_id}}>
+
+         <div class='row'>
+           <div class='col-xs-5'>
+
+             <img src ={{ obj.img_url }} class="img-responsive img-thumb">
+           </div>
+           <div class='col-xs-7'>
+
+             {{ obj.title }}
+             <h1>&ensp;#{{  obj.num }}</h1>
+           </div>
+         
+         </div>
+       </a>
+
+
+     {% endfor %}
+     </div>
+   {%endif%}

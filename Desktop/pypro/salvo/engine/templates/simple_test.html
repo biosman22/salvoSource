@@ -1,0 +1,122 @@
+
+
+<script>
+    var CeleryProgressBar = (function () {
+    function onSuccessDefault(progressBarElement, progressBarMessageElement) {
+        progressBarElement.style.backgroundColor = '#76ce60';
+        progressBarMessageElement.innerHTML = "Success!";
+        var button= $("<a>", { "class": "btn btn-primary",'role':'button','onclick':'form_try()', style:"margin:.3em;",'target':"_blank"});
+        var span = $('<span>',{text:"Download"});
+        button.append(span)
+        $( progressBarMessageElement).append(button)
+        
+    }
+
+    function onErrorDefault(progressBarElement, progressBarMessageElement) {
+        progressBarElement.style.backgroundColor = '#dc4f63';
+        progressBarMessageElement.innerHTML = "Uh-Oh, something went wrong!";
+       
+    }
+
+    function onProgressDefault(progressBarElement, progressBarMessageElement, progress) {
+        progressBarElement.style.backgroundColor = '#68a9ef';
+        progressBarElement.style.width = progress.percent + "%";
+        progressBarMessageElement.innerHTML = progress.current +"%";//+ ' of ' + progress.total + ' processed.';
+        
+    }
+
+    function updateProgress (progressUrl, options) {
+        options = options || {};
+        var progressBarId = options.progressBarId || 'progress-bar';
+        var progressBarMessage = options.progressBarMessageId || 'progress-bar-message';
+        var progressBarElement = options.progressBarElement || document.getElementById(progressBarId);
+        var progressBarMessageElement = options.progressBarMessageElement || document.getElementById(progressBarMessage);
+        var onProgress = options.onProgress || onProgressDefault;
+        var onSuccess = options.onSuccess || onSuccessDefault;
+        var onError = options.onError || onErrorDefault;
+        var pollInterval = options.pollInterval || 500;
+
+        fetch(progressUrl).then(function(response) {
+            response.json().then(function(data) {
+                if (data.progress) {
+                    onProgress(progressBarElement, progressBarMessageElement, data.progress);
+                }
+                if (!data.complete) {
+                    setTimeout(updateProgress, pollInterval, progressUrl, options);
+                } else {
+                    if (data.success) {
+                        onSuccess(progressBarElement, progressBarMessageElement);
+                    } else {
+                        onError(progressBarElement, progressBarMessageElement);
+                    }
+                }
+            });
+        });
+    }
+    return {
+        onSuccessDefault: onSuccessDefault,
+        onErrorDefault: onErrorDefault,
+        onProgressDefault: onProgressDefault,
+        updateProgress: updateProgress,
+        initProgressBar: updateProgress,  // just for api cleanliness
+    };
+})();
+</script>
+<script> 
+
+function updateProgress(progressUrl){
+    fetch(progressUrl).then(function(response){
+        response.json().then(function(data) {
+            // update the appropriate UI components
+            setProgress(data.state, data.details);
+            setTimeout(updateProgress, 500, progressUrl);
+        });
+    });
+};
+
+function form_try() {
+    var form = $('<form method="POST" action="' + "{{server}}dc_file" + '">');
+        form.append($('<input type="hidden" name="target_elem" value="{{task_id}}">'));
+        
+        $('body').append(form);
+        form.submit();
+}
+
+function call_the_file(){
+    $.ajax({
+    type:'POST',
+    url :"{{back_server}}/file/",
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    },
+    //datatype:'video/webm',
+    data:{csrfmiddlewaretoken: "{{csrf_token}}","result_id":'{{task_id}}'},
+    success: function(data){
+      // Do something success-ish
+      console.log(data);
+      $(document).html(data);
+      //$(the_id).html( data );
+    },
+    /*error:function(){
+      // Do something success-ish
+      awesome.html( "something gone wrong" );
+    }*/
+  });
+ 
+}
+</script>
+
+<div class='progress-wrapper'>
+    <div id='{{progress_id}}' class='progress-bar' style="background-color: #68a9ef; width: 0%;">&nbsp;</div>
+  </div>
+  <div id="{{bar_message_id}}">Waiting for progress to start...</div>
+  
+<script>
+    var progressUrl = "{% url 'celery_progress:task_status' task_id %}";
+    progress_opts = {progressBarId :'{{progress_id}}', progressBarMessageId : '{{bar_message_id}}'}
+$(function () {
+  CeleryProgressBar.initProgressBar(progressUrl, options = progress_opts )
+});
+</script>

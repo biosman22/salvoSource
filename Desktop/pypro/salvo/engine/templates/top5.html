@@ -1,0 +1,157 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+ <!-- <a href="https://www.youtube.com">
+  <img alt="You Tube" src="https://image.ibb.co/bYsdx5/You_Tube_00.gif" width="77px" ></img>
+  </a>
+-->
+<script>
+
+  var server_url = window.location.href
+</script>
+<div class="container">
+  <h1><br></h1>
+  <div class="row">
+    <div class="col-sm-3">
+    </div>
+    <div class="col-sm-6">
+      <div class="row">
+	    <div class="col-xs-3">
+		</div>
+		<div class="col-xs-6">
+		  <a href={{server}}>
+		    <img  class= "img img-responsive"   src="http://image.ibb.co/mA8zSR/salvo4.png"  alt="salvo" border="0">
+		  </a>
+		</div>
+		<div class="col-xs-3">
+		</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-6">
+     <h6><br></h6>
+     {% block lol  %}
+     {% endblock %}
+    </div>
+    <div class="col-sm-6">
+     <h3><br></h3>
+     
+     {% if top %}
+      <div class="list-group">
+        <a class='list-group-item '>
+          <h4 class="list-group-item-heading" >Top downloads</h4>
+        </a>
+        {% for obj in top %}
+        <a class="list-group-item" href="{{server}}t/{{obj.unique_id}}">
+
+          <div class='row'>
+            <div class='col-xs-5'>
+
+              <img src ="https://i.ytimg.com/vi/{{obj.unique_id}}/hqdefault.jpg" class="img-responsive img-thumb">
+            </div>
+            <div class='col-xs-7'>
+
+              {{obj.title}}
+              <h1>&ensp;#{{  obj.num }}</h1>
+            </div>
+          
+          </div>
+        </a>
+
+
+      {% endfor %}
+      </div>
+    
+    {% elif playlist %}
+    <script>
+
+   $(document).ready(
+  
+  function() 
+{ 
+  var ajax_playlist = $( ".ajax_play_list" );
+ // alert( "Load was performed." );
+ $.ajax({
+      
+      type:'GET',
+      url :  "{{server}}l?{{list_link}}" ,
+      success: function(data){
+        // o something success-ish
+       
+        ajax_playlist.html( data );
+      },
+      //error:function(){
+        // Do something success-ish
+        //alert('outside');
+       // $.get( "{{server}}top5", function( odata ) {
+         //alert('inside');
+        
+        //$('#replace-fallback').html(odata);
+        //});
+      //}
+    });
+
+
+
+var x = ajax_playlist.width();
+var center = x/2.5
+$(".img_loading").css("left", center);
+//alert(center);
+
+});
+    </script>
+    <div id="replace-fallback">
+     <p> you have entered a playlist url </p>
+
+<div class="list-group">
+    <div class=' list-group-item '>
+      <div class="row">
+        <div class="col-xs-1">
+          <input class="master" type="checkbox" id="master_check"  onclick="select_all()" name="video-all" >  
+        </div>
+        <div class="col-xs-11">
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon1">Playlist</span>
+              <input type="text" class="form-control" id="lol" placeholder="Search" aria-describedby="basic-addon1">
+            </div>
+          </div>
+      </div>
+    </div>
+
+
+     <form id="form-yo" action="" method="post">
+        {% csrf_token %}
+      <div name="here">
+      <div name='orginal' id="yo-inside" style="overflow-y: scroll; height:400px;">
+        <div class="ajax_play_list">
+        <style>
+            
+      .img_loading {
+      width: inherit;
+      width: 25%;
+      position: relative;
+      
+          }
+      </style>
+            <img style="" class="img_loading" src="https://image.ibb.co/cs4EfR/200w_d.gif">
+               
+      </div>
+      </div>
+      </div>
+      <button type="button" id="button" onclick="get_them()"  class="btn btn-lg btn-primary btn-block">Process</button>
+  
+    </form>
+  </div>
+    </div>
+  {% endif %}
+</div>
+</div>
+{% block last  %}
+{% endblock %}
+</div>
+
+
+{% endblock %}
